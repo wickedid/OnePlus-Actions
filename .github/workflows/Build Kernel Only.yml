@@ -157,12 +157,12 @@ jobs:
           echo "CCACHE_DIR=$HOME/.ccache_${{ github.event.inputs.FEIL }}_Kernel" >> $GITHUB_ENV
           mkdir -p "$HOME/.ccache_${{ github.event.inputs.FEIL }}_Kernel"
           echo "✅ 缓存目录已设置: $HOME/.ccache_${{ github.event.inputs.FEIL }}_Kernel"
-          sudo date -s "2025-12-06 06:00:00"
+          
       - name: "🔐 Configure Git | 配置Git账户"
         run: |
           echo "🔧 正在配置Git用户信息..."
           git config --global user.name "build"
-          git config --global user.email "2210077278@qq.com"
+          git config --global user.email "3379524839@qq.com"
           echo "✅ Git配置完成"
 
       - name: "📦 Cache & Install Dependencies | 缓存 & 安装构建依赖"
@@ -242,7 +242,7 @@ jobs:
           fi
 
           echo "✅ 内核配置完成"
-          
+        
 
       - name: "⚡ Setup Baseband-guard | 配置 Baseband-guard"
         if: ${{ github.event.inputs.bbg == 'On' }}
@@ -417,6 +417,7 @@ jobs:
           # Remove check_defconfig
           sed -i 's/check_defconfig//' ./common/build.config.gki
           echo "✅ 内核配置更新完成"
+          sudo date -s "2025-12-06 06:00:00"
           
       - name: "🔨 Build Kernel | 编译内核"
         run: |
