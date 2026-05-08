@@ -417,7 +417,7 @@ jobs:
           # Remove check_defconfig
           sed -i 's/check_defconfig//' ./common/build.config.gki
           echo "✅ 内核配置更新完成"
-          sudo date -s "2025-12-06 06:00:00"
+          sudo date -s "2025-12-06 12:00:00"
           
       - name: "🔨 Build Kernel | 编译内核"
         run: |
