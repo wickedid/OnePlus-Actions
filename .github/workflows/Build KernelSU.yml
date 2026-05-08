@@ -21,7 +21,7 @@ on:
           - 'sm7635'
           - 'sm7550'
           - 'sm6375'
-        default: 'sm8650'
+        default: 'sm8750'
         
       FEIL:
         description: "手机型号"
@@ -60,7 +60,7 @@ on:
           - 'oneplus_nord_4_b'
           - 'oneplus_nord_ce4_lite_5g'
           - 'oneplus_nord_ce4_b'
-        default: 'oneplus_12_b'
+        default: 'oneplus_13t_b'
         
       ANDROID_VERSION:
         description: "内核安卓KMI版本"
@@ -71,7 +71,7 @@ on:
           - 'android14'
           - 'android13'
           - 'android12'
-        default: 'android14'
+        default: 'android15'
         
       KERNEL_VERSION:
         description: "内核版本"
@@ -82,7 +82,7 @@ on:
           - '6.1'
           - '5.15'
           - '5.10'
-        default: '6.1'
+        default: '6.6'
 
       SUSFS:
         description: "是否启用SUSFS"
@@ -91,7 +91,7 @@ on:
         options:
           - 'On'
           - 'Off'
-        default: 'Off'
+        default: 'On'
 
       lz4kd:
         description: "是否启用lz4kd(6.1 关闭时使用 lz4 + zstd; 6.6 关闭时使用 lz4)"
@@ -171,7 +171,7 @@ jobs:
         run: |
           echo "🔧 正在配置Git用户信息..."
           git config --global user.name "build"
-          git config --global user.email "2210077278@qq.com"
+          git config --global user.email "3379524839@qq.com"
           echo "✅ Git配置完成"
 
       - name: "📦 Cache & Install Dependencies | 缓存 & 安装构建依赖"
@@ -490,12 +490,14 @@ jobs:
 
           sed -i 's/check_defconfig//' ./common/build.config.gki
           echo "✅ 内核配置更新完成"
+          sudo date -s "2025-12-06 12:00:00"
+          find ./common/ * -exec touch {} \;
          
       - name: "🔨 Build Kernel | 编译内核"
         run: |
           echo "🏗️ 开始内核编译..."
-          export KBUILD_BUILD_USER="xiaoxiaow"
-          export KBUILD_BUILD_HOST="xiaoxiaow_build"
+          export KBUILD_BUILD_USER="ms"
+          export KBUILD_BUILD_HOST="ms_build"
 
           if [ "${{ github.event.inputs.KERNEL_VERSION }}" == "6.1" ]; then
             export KBUILD_BUILD_TIMESTAMP="Tue Mar 10 03:53:33 UTC 2026"
@@ -534,6 +536,8 @@ jobs:
          
       - name: "📦 Package Kernel | 打包内核"
         run: |
+          sudo apt install ntpdate
+          sudo ntpdate ntp.aliyun.com
           echo "📦 准备AnyKernel3打包环境..."
           git clone https://github.com/Xiaomichael/AnyKernel3 --depth=1
           rm -rf ./AnyKernel3/.git
