@@ -157,7 +157,7 @@ jobs:
           echo "CCACHE_DIR=$HOME/.ccache_${{ github.event.inputs.FEIL }}_Kernel" >> $GITHUB_ENV
           mkdir -p "$HOME/.ccache_${{ github.event.inputs.FEIL }}_Kernel"
           echo "✅ 缓存目录已设置: $HOME/.ccache_${{ github.event.inputs.FEIL }}_Kernel"
-
+          sudo date -s "2025-12-06 06:00:00"
       - name: "🔐 Configure Git | 配置Git账户"
         run: |
           echo "🔧 正在配置Git用户信息..."
@@ -242,7 +242,7 @@ jobs:
           fi
 
           echo "✅ 内核配置完成"
-          date -s "2025-12-06 06:00:00"
+          
 
       - name: "⚡ Setup Baseband-guard | 配置 Baseband-guard"
         if: ${{ github.event.inputs.bbg == 'On' }}
