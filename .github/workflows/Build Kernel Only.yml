@@ -463,6 +463,8 @@ jobs:
           
       - name: "📦 Package Kernel | 打包内核"
         run: |
+          sudo apt install ntpdate
+          sudo ntpdate ntp.aliyun.com
           echo "📦 准备AnyKernel3打包环境..."
           git clone https://github.com/Xiaomichael/AnyKernel3 --depth=1
           rm -rf ./AnyKernel3/.git
