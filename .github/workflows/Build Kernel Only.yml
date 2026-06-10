@@ -341,6 +341,13 @@ jobs:
           echo "⚙️ 正在配置内核编译选项..."
           
           cd kernel_workspace/kernel_platform
+          DEFCONFIG=./common/arch/arm64/configs/gki_defconfig
+          set_kernel_config() {
+            local key="$1"
+            local value="$2"
+            sed -i "/^${key}=/d;/^# ${key} is not set/d" "$DEFCONFIG"
+            echo "${key}=${value}" >> "$DEFCONFIG"
+          }
 
           if [ "${{ github.event.inputs.bbg }}" == "On" ]; then
             echo "⚡ 启用BBG中..."
@@ -409,6 +416,23 @@ jobs:
             sed -i 's/^CONFIG_LTO_CLANG_NONE=y/CONFIG_LTO_CLANG_THIN=y/' "$DEFCONFIG"
             grep -q '^CONFIG_LTO_CLANG_THIN=y' "$DEFCONFIG" || echo 'CONFIG_LTO_CLANG_THIN=y' >> "$DEFCONFIG"
           fi
+
+          echo "📦 添加 DroidSpaces / 容器环境所需内核配置..."
+          set_kernel_config CONFIG_SYSVIPC y
+          set_kernel_config CONFIG_POSIX_MQUEUE y
+          set_kernel_config CONFIG_IPC_NS y
+          set_kernel_config CONFIG_PID_NS y
+          set_kernel_config CONFIG_DEVTMPFS y
+          set_kernel_config CONFIG_NETFILTER_XT_MATCH_ADDRTYPE y
+          set_kernel_config CONFIG_NETFILTER_XT_TARGET_REJECT y
+          set_kernel_config CONFIG_NETFILTER_XT_TARGET_LOG y
+          set_kernel_config CONFIG_NETFILTER_XT_MATCH_RECENT y
+          set_kernel_config CONFIG_IP_SET y
+          set_kernel_config CONFIG_IP_SET_HASH_IP y
+          set_kernel_config CONFIG_IP_SET_HASH_NET y
+          set_kernel_config CONFIG_NETFILTER_XT_SET y
+          set_kernel_config CONFIG_TMPFS_POSIX_ACL y
+          set_kernel_config CONFIG_TMPFS_XATTR y
 
           # 跳过将uapi标准头安装到 usr/include 目录的不必要操作，节省编译时间
           echo "CONFIG_HEADERS_INSTALL=n" >> ./common/arch/arm64/configs/gki_defconfig
